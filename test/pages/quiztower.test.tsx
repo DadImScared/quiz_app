@@ -54,7 +54,9 @@ describe("quiz tower", () => {
     Date.now = jest.fn(() => 12345)
     const store = makeStore()
     const questions = await getMultipleDifficultyQuiz()
-    const { findByRole, queryByRole } = render(<QuizTower />, { store })
+    const { findByRole, queryByRole, queryByText } = render(<QuizTower />, {
+      store,
+    })
     const wrongAnswer = getWrongAnswer(
       questions[0].correct_answer,
       questions[0].incorrect_answers
@@ -64,6 +66,7 @@ describe("quiz tower", () => {
     expect(await findByRole("alert")).toHaveTextContent(
       "Game over you answered 1 out of 15 questions correct"
     )
+    expect(queryByText(/1 \/ 15/)).not.toBeInTheDocument()
     expect(store.getState().quizHistory[12345][0].selectedAnswer).toEqual(
       wrongAnswer
     )

@@ -96,7 +96,34 @@ function QuizTower(): JSX.Element {
 
   return (
     <Container>
-      {quizStatus === QuizStatus.Playing ? null : (
+      {quizStatus === QuizStatus.Playing ? (
+        <>
+          <div>
+            current question {currentQuestion + 1} / {data.length}
+          </div>
+          <div className={classes.gridContainer}>
+            {data.map((question: Question, index) => {
+              return (
+                <Fade
+                  timeout={800}
+                  in={currentQuestion === index}
+                  key={question.question}
+                  style={{ zIndex: 55 - index }}
+                >
+                  <div className={classes.gridItem}>
+                    <Grid container>
+                      <Grid item>
+                        <p style={{ height: "70px" }}>{question.question}</p>
+                      </Grid>
+                      {showAnswers(question.incorrect_answers)}
+                    </Grid>
+                  </div>
+                </Fade>
+              )
+            })}
+          </div>
+        </>
+      ) : (
         <Alert
           variant="filled"
           severity={quizStatus === QuizStatus.Won ? "success" : "error"}
@@ -108,30 +135,6 @@ function QuizTower(): JSX.Element {
               } questions correct`}
         </Alert>
       )}
-      <div>
-        current question {currentQuestion + 1} / {data.length}
-      </div>
-      <div className={classes.gridContainer}>
-        {data.map((question: Question, index) => {
-          return (
-            <Fade
-              timeout={800}
-              in={currentQuestion === index}
-              key={question.question}
-              style={{ zIndex: 55 - index }}
-            >
-              <div className={classes.gridItem}>
-                <Grid container>
-                  <Grid item>
-                    <p style={{ height: "70px" }}>{question.question}</p>
-                  </Grid>
-                  {showAnswers(question.incorrect_answers)}
-                </Grid>
-              </div>
-            </Fade>
-          )
-        })}
-      </div>
     </Container>
   )
 }
