@@ -1,3 +1,4 @@
+import { rest } from "msw"
 import { setupServer } from "msw/node"
 import { cache } from "swr"
 import "@testing-library/jest-dom/extend-expect"
@@ -11,16 +12,17 @@ import {
   makeStore,
   getWrongAnswer,
 } from "../testUtils"
-import { handlers } from "../handlers"
+import { getFilteredQuestions, handlers } from "../handlers"
 import QuizTower from "../../pages/quiztower"
 import { getMultipleDifficultyQuiz } from "../../app/quizApi"
+import { quizTowerSecondQuestionSet } from "../questions"
 
 const server = setupServer(...handlers)
 
 beforeAll(() => server.listen())
 afterEach(() => {
-  server.resetHandlers()
   cache.clear()
+  server.resetHandlers()
 })
 afterAll(() => server.close())
 
@@ -70,5 +72,38 @@ describe("quiz tower", () => {
     expect(store.getState().quizHistory[12345][0].selectedAnswer).toEqual(
       wrongAnswer
     )
+  })
+
+  it("should fetch new questions when play again is clicked", async () => {
+    const questions = await getMultipleDifficultyQuiz()
+    const { findByRole } = render(<QuizTower />)
+    fireEvent.click(
+      await findByRole("button", { name: questions[0].correct_answer })
+    )
+    fireEvent.click(
+      await findByRole("button", { name: questions[1].correct_answer })
+    )
+    fireEvent.click(
+      await findByRole("button", { name: questions[2].correct_answer })
+    )
+
+    const wrongAnswer = getWrongAnswer(
+      questions[3].correct_answer,
+      questions[3].incorrect_answers
+    )
+    fireEvent.click(await findByRole("button", { name: wrongAnswer }))
+    server.use(
+      rest.get(
+        "https://opentdb.com/api.php",
+        getFilteredQuestions([...quizTowerSecondQuestionSet])
+      )
+    )
+    fireEvent.click(await findByRole("button", { name: "Play again" }))
+    expect(await findByTextNoTrim(/1 \/ 15/)).toBeVisible()
+    const newQuestions = await getMultipleDifficultyQuiz()
+    expect(getByTextNoTrim(newQuestions[0].question)).toBeVisible()
+    newQuestions.slice(1).forEach((question) => {
+      expect(getByTextNoTrim(question.question)).not.toBeVisible()
+    })
   })
 })

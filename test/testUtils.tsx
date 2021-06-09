@@ -6,10 +6,11 @@ import {
 } from "@testing-library/react"
 import { ThemeProvider } from "@material-ui/core/styles"
 import { Provider } from "react-redux"
+import { configureStore } from "@reduxjs/toolkit"
+import { SWRConfig } from "swr"
 
 import theme from "../app/theme"
 import { reducer } from "../app/store"
-import { configureStore } from "@reduxjs/toolkit"
 
 const customRender = (
   ui: any,
@@ -22,7 +23,9 @@ const customRender = (
   function Providers({ children }: any) {
     return (
       <Provider store={store}>
-        <ThemeProvider theme={theme}>{children}</ThemeProvider>
+        <SWRConfig value={{ dedupingInterval: 0 }}>
+          <ThemeProvider theme={theme}>{children}</ThemeProvider>
+        </SWRConfig>
       </Provider>
     )
   }

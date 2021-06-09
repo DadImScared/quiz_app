@@ -40,7 +40,7 @@ function QuizTower(): JSX.Element {
   const dispatch = useAppDispatch()
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [quizStatus, setQuizStatus] = useState<QuizStatus>(0)
-  const { data } = useSWR("/multipleDifficultyQuiz", fetcher, {
+  const { data, mutate } = useSWR("/multipleDifficultyQuiz", fetcher, {
     revalidateOnMount: true,
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
@@ -58,7 +58,11 @@ function QuizTower(): JSX.Element {
   const selectAnswer = async (answer: string) => {
     if (!data) return
     const { correct_answer: correctAnswer } = data[currentQuestion]
-    data[currentQuestion].selectedAnswer = answer
+    await mutate((newData) => {
+      if (!newData) return newData
+      newData[currentQuestion].selectedAnswer = answer
+      return newData
+    }, false)
     if (answer !== correctAnswer) {
       endQuiz(QuizStatus.Lost)
       return
@@ -68,6 +72,12 @@ function QuizTower(): JSX.Element {
       return
     }
     setCurrentQuestion((prevState) => prevState + 1)
+  }
+
+  const playAgain = async () => {
+    await mutate()
+    setQuizStatus(QuizStatus.Playing)
+    setCurrentQuestion(0)
   }
 
   const showAnswers = (answers: string[]) => {
@@ -127,6 +137,11 @@ function QuizTower(): JSX.Element {
         <Alert
           variant="filled"
           severity={quizStatus === QuizStatus.Won ? "success" : "error"}
+          action={
+            <Button onClick={playAgain} color="inherit" size="small">
+              Play again
+            </Button>
+          }
         >
           {quizStatus === QuizStatus.Won
             ? "Congratulations you answered all questions correct!"

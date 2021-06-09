@@ -1,21 +1,23 @@
-import { rest } from "msw"
+import {
+  DefaultRequestBody,
+  RequestParams,
+  ResponseResolver,
+  rest,
+  RestContext,
+  RestRequest,
+} from "msw"
 import filter from "lodash/filter"
 
 import { questions } from "./questions"
+import { Question } from "../features/quizHistory/quizHistorySlice"
 
-export const handlers = [
-  rest.get("https://opentdb.com/api_token.php", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        response_code: 0,
-        response_message: "Token Generated Successfully!",
-        token:
-          "19fe9954ae4968458d735618abc0ae807e54d728d5de6ae03937d594df8220c0",
-      })
-    )
-  }),
-  rest.get("https://opentdb.com/api.php", (req, res, ctx) => {
+export const getFilteredQuestions = (
+  questions: Question[]
+): ResponseResolver<
+  RestRequest<DefaultRequestBody, RequestParams>,
+  RestContext
+> => {
+  return (req, res, ctx) => {
     const category = req.url.searchParams.get("category")
     const type = req.url.searchParams.get("type")
     const amount = req.url.searchParams.get("amount") || "5"
@@ -37,5 +39,20 @@ export const handlers = [
         results: filter(questions, filterQuestions).slice(0, Number(amount)),
       })
     )
+  }
+}
+
+export const handlers = [
+  rest.get("https://opentdb.com/api_token.php", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        response_code: 0,
+        response_message: "Token Generated Successfully!",
+        token:
+          "19fe9954ae4968458d735618abc0ae807e54d728d5de6ae03937d594df8220c0",
+      })
+    )
   }),
+  rest.get("https://opentdb.com/api.php", getFilteredQuestions(questions)),
 ]

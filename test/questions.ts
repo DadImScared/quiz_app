@@ -1,4 +1,6 @@
-export const questions = [
+import { Question } from "../features/quizHistory/quizHistorySlice"
+
+export const questions: Question[] = [
   {
     category: "General Knowledge",
     type: "multiple",
@@ -815,6 +817,155 @@ export const questions = [
       "San Fransisco, CA",
       "Philidelphia, PA",
       "West Point, NY",
+    ],
+  },
+]
+
+export const quizTowerSecondQuestionSet: Question[] = [
+  {
+    category: "General Knowledge",
+    type: "multiple",
+    difficulty: "easy",
+    question: "Which American president appears on a one dollar bill?",
+    correct_answer: "George Washington",
+    incorrect_answers: [
+      "Thomas Jefferson",
+      "Abraham Lincoln",
+      "Benjamin Franklin",
+    ],
+  },
+  {
+    category: "General Knowledge",
+    type: "multiple",
+    difficulty: "easy",
+    question:
+      "What is on display in the Madame Tussaud&#039;s museum in London?",
+    correct_answer: "Wax sculptures",
+    incorrect_answers: [
+      "Designer clothing",
+      "Unreleased film reels",
+      "Vintage cars",
+    ],
+  },
+  {
+    category: "General Knowledge",
+    type: "multiple",
+    difficulty: "easy",
+    question: "Who is depicted on the US hundred dollar bill?",
+    correct_answer: "Benjamin Franklin",
+    incorrect_answers: [
+      "George Washington",
+      "Abraham Lincoln",
+      "Thomas Jefferson",
+    ],
+  },
+  {
+    category: "General Knowledge",
+    type: "multiple",
+    difficulty: "easy",
+    question: "What company developed the vocaloid Hatsune Miku?",
+    correct_answer: "Crypton Future Media",
+    incorrect_answers: ["Sega", "Sony", "Yamaha Corporation"],
+  },
+  {
+    category: "General Knowledge",
+    type: "multiple",
+    difficulty: "easy",
+    question: "Which candy is NOT made by Mars?",
+    correct_answer: "Almond Joy",
+    incorrect_answers: ["M&amp;M&#039;s", "Twix", "Snickers"],
+  },
+  {
+    category: "General Knowledge",
+    type: "multiple",
+    difficulty: "medium",
+    question: "Which river flows through the Scottish city of Glasgow?",
+    correct_answer: "Clyde",
+    incorrect_answers: ["Tay", "Dee", "Tweed"],
+  },
+  {
+    category: "General Knowledge",
+    type: "multiple",
+    difficulty: "medium",
+    question:
+      "The new One World Trade Center in Manhattan, New York City was designed by which architect? ",
+    correct_answer: "David Childs",
+    incorrect_answers: ["Bjarke Ingels", "Michael Arad", "Fumihiko Maki"],
+  },
+  {
+    category: "General Knowledge",
+    type: "multiple",
+    difficulty: "medium",
+    question:
+      "Which of the following carbonated soft drinks were introduced first?",
+    correct_answer: "Dr. Pepper",
+    incorrect_answers: ["Coca-Cola", "Sprite", "Mountain Dew"],
+  },
+  {
+    category: "General Knowledge",
+    type: "multiple",
+    difficulty: "medium",
+    question: "Who invented Pastafarianism?",
+    correct_answer: "Bobby Henderson",
+    incorrect_answers: ["Eric Tignor", "Bill Nye", "Zach Soldi"],
+  },
+  {
+    category: "General Knowledge",
+    type: "multiple",
+    difficulty: "medium",
+    question: "What is real haggis made of?",
+    correct_answer: "Sheep&#039;s Heart, Liver and Lungs",
+    incorrect_answers: [
+      "Sheep&#039;s Heart, Kidneys and Lungs",
+      "Sheep&#039;s Liver, Kidneys and Eyes",
+      "Whole Sheep",
+    ],
+  },
+  {
+    category: "General Knowledge",
+    type: "multiple",
+    difficulty: "hard",
+    question:
+      "What type of dog is &#039;Handsome Dan&#039;, the mascot of Yale University?",
+    correct_answer: "Bulldog",
+    incorrect_answers: ["Yorkshire Terrier", "Boxer", "Pug"],
+  },
+  {
+    category: "General Knowledge",
+    type: "multiple",
+    difficulty: "hard",
+    question:
+      "The words &quot;bungalow&quot; and &quot;shampoo&quot; originate from the languages of which country?",
+    correct_answer: "India",
+    incorrect_answers: ["Papua New Guinea", "Ethiopia", "China"],
+  },
+  {
+    category: "General Knowledge",
+    type: "multiple",
+    difficulty: "hard",
+    question: "What is the romanized Arabic word for &quot;moon&quot;?",
+    correct_answer: "Qamar",
+    incorrect_answers: ["Najma", "Kawkab", "Shams"],
+  },
+  {
+    category: "General Knowledge",
+    type: "multiple",
+    difficulty: "hard",
+    question:
+      "Which product did Nokia, the telecommunications company, originally sell?",
+    correct_answer: "Paper",
+    incorrect_answers: ["Phones", "Computers", "Processors"],
+  },
+  {
+    category: "General Knowledge",
+    type: "multiple",
+    difficulty: "hard",
+    question: "Nephelococcygia is the practice of doing what?",
+    correct_answer: "Finding shapes in clouds",
+    incorrect_answers: [
+      "Sleeping with your eyes open",
+      "Breaking glass with your voice",
+      "Swimming in freezing water",
     ],
   },
 ]
