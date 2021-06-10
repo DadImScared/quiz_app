@@ -106,4 +106,25 @@ describe("quiz tower", () => {
       expect(getByTextNoTrim(question.question)).not.toBeVisible()
     })
   })
+
+  it("should show congrats message on win", async () => {
+    Date.now = jest.fn(() => 12345)
+    const store = makeStore()
+    const questions = await getMultipleDifficultyQuiz()
+    const { findByRole } = render(<QuizTower />, { store })
+    for (const question of questions) {
+      fireEvent.click(
+        await findByRole("button", { name: question.correct_answer })
+      )
+    }
+    expect(await findByRole("alert")).toHaveTextContent(
+      "Congratulations you answered all questions correct!"
+    )
+    const questionHistory = store.getState().quizHistory[12345]
+    questions.forEach((question, index) => {
+      expect(questionHistory[index].selectedAnswer).toEqual(
+        question.correct_answer
+      )
+    })
+  }, 30000)
 })
